@@ -4,7 +4,8 @@ def main():
     is_true = True
     while is_true == True:
         try: 
-            interface_menu_game()
+            machine(interface_menu_game(), 0.002)
+            
             choix = choice_player_dificulty()
             if(choix == "quitter"):
                 print('quitter')
