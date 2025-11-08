@@ -5,7 +5,7 @@ speed_text = {
 }
 life = {
     "juste_die":{"player":10, "ia":1 },
-    "easy":{"player": 1, "ia":3 },
+    "easy":{"player": 6, "ia":5 },
     "medium":{"player":5, "ia":5},
     "hard":{"player": 3, "ia":6 },
 }

@@ -1,8 +1,6 @@
 from app.utils import *
-from data.const import speed_text, difficulty
+from data.const import difficulty
 def main():
-    
- 
     is_true = True
     is_play_game = False
     interface_menu_game()
