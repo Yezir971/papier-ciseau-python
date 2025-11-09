@@ -4,7 +4,7 @@ from data.trash_talk import *
 from data.const import posibility, win_condition
 from data.const import speed_text, life
 import os
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 from InquirerPy import inquirer
 
 
@@ -128,7 +128,7 @@ def erase_terminal():
 
 
 def match_game(answer:str ,answer_ia:str, nb_life_j1: int, nb_life_boot:int, difficulty:str )-> int:
-    """Logical for all level
+    """Logical for all level, return the number of pv Ducker and player
 
     Args:
         answer (str): Answer of player
