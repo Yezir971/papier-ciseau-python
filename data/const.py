@@ -4,12 +4,12 @@ speed_text = {
     "fast":0.002
 }
 life = {
-    "juste_die":{"player":10, "ia":1 },
+    "verry_hard":{"player":10, "ia":1 },
     "easy":{"player": 6, "ia":5 },
     "medium":{"player":5, "ia":5},
     "hard":{"player": 3, "ia":6 },
 }
-difficulty = ("easy", "medium", "hard", "juste_die")
+difficulty = ("easy", "medium", "hard", "verry_hard")
 
 posibility = ('pierre', 'papier', 'ciseau')
 win_condition = ('papier', 'ciseau', 'pierre')

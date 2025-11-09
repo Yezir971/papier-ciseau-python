@@ -6,22 +6,18 @@ def main():
     interface_menu_game()
     while is_true:
         try: 
-            choix = choice_player_dificulty()
+            choix = choice_player("Choisis une dificulté.", "easy", "easy", "medium", "hard", "verry hard")
             if(choix == "quitter"):
                 break
-            choix = int(choix)
-            if choix in range(1,len(difficulty)+1):
-                is_play_game = True
-            else:
-                print(f"Choix invalide, veuillez entrer 1, 2, 3, 4 ou 'quitter' pour arreter de jouer.")
-                choix = choice_player_dificulty()
+            type(choix)
+            is_play_game = True
             while is_play_game:
                 print(f"Difficulté -> {choix}")
                 play_game(choix)
                 break
         except ValueError:
             print('Vous avez entrer un mauvais choix')
-            choix = choice_player_dificulty()
+            choix = choice_player("choisis une dificulté.", "easy", "easy", "medium", "hard", "verry hard")
             
     
     
