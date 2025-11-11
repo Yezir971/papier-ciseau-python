@@ -44,6 +44,9 @@ def game_lvl(difficulty: str)-> bool:
     machine(f'Point{"s" if nb_life_boot>1 else ""} de vie de Ducky : {nb_life_boot}\n', speed_text['medium'])
     while nb_life_boot > 0 and nb_life_j1 > 0:
         answer = choice_player('Choix du joueur','pierre\n','pierre', 'papier', 'ciseau', 'C\'est bon, j\'en ai marre je préfère abandonner')
+        # permet d'arreter de jouer pendant la game 
+        if answer == 'C\'est bon, j\'en ai marre je préfère abandonner':
+            return replay_or_not(difficulty)
         # si le jouerur est en mode très très difficile on prend exactement le contre de son coup pour le faire perdre :D
         answer_ia = random.choice(posibility) if difficulty != "verry_hard" else win_condition[posibility.index(answer)]
         nb_life_j1, nb_life_boot = match_game(answer,answer_ia,nb_life_j1, nb_life_boot, difficulty)
@@ -56,6 +59,9 @@ def game_lvl(difficulty: str)-> bool:
     if nb_life_j1 == -1 and nb_life_boot == -1: # Cas qui permet au joueur d'arreter le jeux et de retourner au menu principal
         erase_terminal()
         return False
+    return replay_or_not(difficulty)
+        
+def replay_or_not(difficulty: str):
     is_play_game = choice_player('Voulez vous rejouer ou retourner au menu principal.','Rejouer','Rejouer','Retour au choix du niveau')
     if is_play_game == "Rejouer":
         game_lvl(difficulty)
@@ -66,4 +72,3 @@ def game_lvl(difficulty: str)-> bool:
         return False
     else:
         machine(Fore.RED+'Veuillez entrer un choix possible', speed_text["medium"])
-        

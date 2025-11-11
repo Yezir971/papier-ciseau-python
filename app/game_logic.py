@@ -46,7 +46,7 @@ def match_game(answer:str ,answer_ia:str, nb_life_j1: int, nb_life_boot:int, dif
             else:
                 template_ui_after_choice(nb_life_j1, nb_life_boot,'égalité' , answer_ia)                
         case 'C\'est bon, j\'en ai marre je préfère abandonner':
-            is_play_game = choice_player('Voulez vous rejouer ou retourner au menu principal.','Rejouer','Rejouer','Retour au menu')
+            is_play_game = choice_player('Voulez vous rejouer ou retourner au menu des niveaux.','Rejouer','Rejouer','Retour au menu des niveaux')
             if( is_play_game =='Rejouer' ):
                 # si on rejoue on reset le nombre de pv des joueurs 
                 nb_life_boot = life[difficulty]["ia"]
@@ -54,7 +54,7 @@ def match_game(answer:str ,answer_ia:str, nb_life_j1: int, nb_life_boot:int, dif
                 machine('Les points de vie des 2 joueurs ont été réinitialisé\n', speed_text['medium'])
                 machine(f'Point de vie du joueur : {nb_life_j1}\n', speed_text['medium'])
                 machine(f'Point de vie de Ducky : {nb_life_boot}\n', speed_text['medium'])
-            elif(is_play_game == 'Retour au menu'):
+            elif(is_play_game == 'Retour au menu des niveaux'):
                 nb_life_boot = -1
                 nb_life_j1 = -1
         case _:

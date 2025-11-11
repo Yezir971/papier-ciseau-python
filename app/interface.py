@@ -57,7 +57,7 @@ def choice_player(message: str, default: str, *choices):
         amark="",   
         qmark="",         
         default=default,
-        instruction='(Haut bas pour selectionner)'         
+        instruction='(Haut bas puis enter pour sélectionner)'         
     ).execute()
     
 def erase_terminal():
