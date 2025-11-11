@@ -1,7 +1,7 @@
-from app.utils import *
-# from data.text_data import speed_textfrom data.text_data import speed_text
+from app.utils import play_game
+from app.interface import interface_menu_game, machine, choice_player
 from app.cheat_code import checked_password
-from app.interface import interface_menu_game
+from data.text_data import speed_text
 def main():
     is_run = True
     while is_run:

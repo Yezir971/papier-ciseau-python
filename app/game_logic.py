@@ -1,4 +1,5 @@
 from app.interface import machine, template_ui_after_choice, choice_player
+from data.life_data import life
 from data.text_data import speed_text
 from colorama import Fore, Style
 

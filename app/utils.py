@@ -4,7 +4,7 @@ from data.const import posibility, win_condition
 from data.life_data import life
 from data.text_data import speed_text
 from colorama import Fore
-from app.interface import machine, choice_player, erase_terminal
+from app.interface import machine, choice_player, erase_terminal, template_ui_after_choice
 from app.game_logic import match_game
 from app.cheat_code import reward_cheat_code, activated_cheat
 

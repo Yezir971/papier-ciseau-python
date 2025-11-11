@@ -15,12 +15,12 @@ def checked_password(code: str):
         if info["code"] == code:
             # si le cheat est déjà activer on retourne un message d'erreur 
             if info["is_activate"]:
-                machine(Fore.RED+'Le cheat est déja activer\n', speed_text['medium'])
+                machine(Fore.RED+'Le cheat est déjà activé\n', speed_text['medium'])
             else :
                 info["is_activate"] = True
                 # on affiche la description du cheat que l'on a activé
                 machine(Fore.CYAN+info["description"], speed_text['medium'])
-                machine(Fore.GREEN+'Mot de passe bien activer\n',speed_text["medium"] )
+                machine(Fore.GREEN+'Le cheat est bien activé\n',speed_text["medium"] )
             print(Style.RESET_ALL)
             return
     machine(Fore.RED+'Mot de passe incorect\n',speed_text["medium"] )
@@ -30,7 +30,6 @@ def checked_password(code: str):
 
 def reward_cheat_code(difficulty: str):
     """Displays the success message with the cheat code for the level based on the difficulty.
-
 
     Args:
         difficulty (str): Difficulty game
@@ -42,11 +41,11 @@ def reward_cheat_code(difficulty: str):
         if key == difficulty:
             return f"Félicitations 🥳🥳! tu as gagné un cheat code, il te sera utile dans les niveaux suivants. code : \x1b[34m{cheat_code_data[difficulty]['code']}\n"
         
-def activated_cheat()-> int:
+def activated_cheat()-> tuple:
     """Function Checked if password are activated and return all stat linked by cheat code
 
     Returns:
-        int: Stat cheat code
+        tuple: Stat cheat code
     """
     extra_life_player1 = 0
     extra_life_player2 = 0
