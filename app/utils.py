@@ -1,8 +1,7 @@
 import time
 import random
 from data.trash_talk import *
-from data.const import posibility, win_condition
-from data.const import speed_text, life
+from data.const import posibility, win_condition, cheat_code_data, speed_text, life
 import os
 from colorama import Fore, Style
 from InquirerPy import inquirer
@@ -27,7 +26,7 @@ def interface_menu_game():
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡘⣿⣿⣿⣿⣿⣿⣿⣿⡇⣼⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⢸⣿⣿⣿⣿⣿⣿⣿⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿\n''', speed_text['fast'])
     
-    
+        
 def choice_player(message: str, default: str, *choices):
     """Return a graphical design for user choice 
 
@@ -49,19 +48,23 @@ def choice_player(message: str, default: str, *choices):
         instruction='(Haut bas pour selectionner)'         
     ).execute()
     
-def machine(texte: str, delay: float)-> str:
+def machine(texte: str, delay: float, return_text=True)-> str:
     """Visual effect for mechine read
 
     Args:
         texte (str): texte
         delai (float): delay between letter 
+        return_text (bolean): Bolean for return texte or not
     Returns:
         texte(str): texte
     """
     for i in texte: 
         print(i, flush=True, end="")
         time.sleep(delay)
-    return texte
+    if return_text:
+        return return_text 
+    else:
+        return ""
     
     
 def play_game(level: int):
@@ -90,9 +93,11 @@ def game_lvl(difficulty: str)-> bool:
         bool: bolean for retry game or continue
     """
     erase_terminal()
+    extra_life_player1,extra_life_player2, extra_life_player3, malus_life_duck = activated_cheat()
+
     machine(f'Niveau de difficulté {difficulty} Ducky prépare ses plumes:\n', speed_text["medium"])
-    nb_life_boot = life[difficulty]["ia"]
-    nb_life_j1 = life[difficulty]["player"]
+    nb_life_boot = life[difficulty]["ia"] - malus_life_duck
+    nb_life_j1 = life[difficulty]["player"] + extra_life_player1 + extra_life_player2 + extra_life_player3
     machine(f'Point{"s" if nb_life_j1>1 else ""} de vie du joueur : {nb_life_j1}\n', speed_text['medium'])
     machine(f'Point{"s" if nb_life_boot>1 else ""} de vie de Ducky : {nb_life_boot}\n', speed_text['medium'])
     while nb_life_boot > 0 and nb_life_j1 > 0:
@@ -102,21 +107,20 @@ def game_lvl(difficulty: str)-> bool:
         nb_life_j1, nb_life_boot = match_game(answer,answer_ia,nb_life_j1, nb_life_boot, difficulty)
     if nb_life_boot == 0 :
         print('Le joueur à gagné\n')
+        machine(reward_cheat_code(difficulty), speed_text['medium'])
     if nb_life_j1 == 0 :
         print("L\'IA à gagné\n")
         machine(random.choice(trash_talk[difficulty]), speed_text["medium"])
     if nb_life_j1 == -1 and nb_life_boot == -1: # Cas qui permet au joueur d'arreter le jeux et de retourner au menu principal
         erase_terminal()
-        interface_menu_game()
         return False
-    is_play_game = choice_player('Voulez vous rejouer ou retourner au menu principal.','Rejouer','Rejouer','Retour au menu')
+    is_play_game = choice_player('Voulez vous rejouer ou retourner au menu principal.','Rejouer','Rejouer','Retour au choix du niveau')
     if is_play_game == "Rejouer":
         game_lvl(difficulty)
         erase_terminal()
         return True
-    elif is_play_game == "Retour au menu":
+    elif is_play_game == "Retour au choix du niveau":
         erase_terminal()
-        interface_menu_game()
         return False
     else:
         machine(Fore.RED+'Veuillez entrer un choix possible', speed_text["medium"])
@@ -202,5 +206,66 @@ def template_ui_after_choice(nb_life_j1: int, nb_life_boot: int, message: str, a
     machine(color_texte_player+f'Il vous reste {nb_life_j1} point{"s" if nb_life_j1>1 else ""} de vie\n', speed_text["medium"])
     machine(color_texte_ducky+f'Il ne reste plus que {nb_life_boot} point{"s" if nb_life_boot>1 else ""} de vie à Ducky\n', speed_text["medium"])
     print(Style.RESET_ALL)
+   
+# ------------------------cheat----------------------------  
+def checked_password(code: str):
+    """Check if the password are valid and show a message
+
+    Args:
+        code (str): Password string
+    """
+    for key, info in cheat_code_data.items():
+        if info["code"] == code:
+            # si le cheat est déja activer on retourne un message d'erreur 
+            if info["is_activate"]:
+                machine(Fore.RED+'Le cheat est déja activer\n', speed_text['medium'])
+            else :
+                info["is_activate"] = True
+                # on affiche la description du cheat que l'on a activé
+                machine(Fore.CYAN+info["description"], speed_text['medium'])
+                machine(Fore.GREEN+'Mot de passe bien activer\n',speed_text["medium"] )
+            print(Style.RESET_ALL)
+            return
+    machine(Fore.RED+'Mot de passe incorect\n',speed_text["medium"] )
+    print(Style.RESET_ALL)
+    return
     
-    
+
+def reward_cheat_code(difficulty: str):
+    """Displays the success message with the cheat code for the level based on the difficulty.
+
+
+    Args:
+        difficulty (str): Difficulty game
+
+    Returns:
+        string: Message with cheat code
+    """
+    for key, info in cheat_code_data.items():
+        if key == difficulty:
+            return f"Félicitations 🥳🥳! tu as gagné un cheat code, il te sera utile dans les niveaux suivants. code : \x1b[34m{cheat_code_data[difficulty]['code']}\n"
+        
+def activated_cheat()-> int:
+    """Function Checked if password are activated and return all stat linked by cheat code
+
+    Returns:
+        int: Stat cheat code
+    """
+    extra_life_player1 = 0
+    extra_life_player2 = 0
+    extra_life_player3 = 0
+    malus_life_duck = 0
+
+    for key, info in cheat_code_data.items():
+        if info["is_activate"]:
+            match key:
+                case "easy":
+                    extra_life_player1 =1
+                case "medium":
+                    extra_life_player2 =2
+                case "hard":
+                    malus_life_duck = 1
+                case "verry_hard":
+                    extra_life_player3 = 999
+
+    return extra_life_player1, extra_life_player2 , extra_life_player3, malus_life_duck
